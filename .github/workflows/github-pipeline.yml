@@ -10,7 +10,21 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    services:
+      postgres:
+        image: postgres:13
+        env:
+          POSTGRES_DB: vin
+          POSTGRES_PASSWORD: password
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
     steps:
+    
     - uses: actions/checkout@v3
     
     - name: Set up JDK 21
@@ -34,7 +48,7 @@ jobs:
       
     - name: Generate test report
       run: mvn surefire-report:report-only
-      if: success() || failure()  # 無論測試成功與否都生成報告
+      if: success() || failure()
       
     - name: Archive test results
       uses: actions/upload-artifact@v3
@@ -51,7 +65,7 @@ jobs:
         server_port: 465
         username: ${{secrets.EMAIL_USER}}
         password: ${{secrets.EMAIL_PASS}}
-        subject: Java CI job result for ${{github.repository}}
+        subject: 【PipeLine-GitHub】 Java CI job result for ${{github.repository}}
         body: |
           Build job of ${{github.repository}} completed with status ${{job.status}}
           
