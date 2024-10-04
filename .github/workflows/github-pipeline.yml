@@ -71,7 +71,11 @@ jobs:
         username: ${{secrets.EMAIL_USER}}
         password: ${{secrets.EMAIL_PASS}}
         subject: 【GitHub】 Java CI job result for ${{github.repository}}
-        html_body: file://github_pipeline_email.html
+        body:
+             Build job of ${{github.repository}} completed with status ${{job.status}}
+             Commit:${{github.sha}}
+             Message:${{github.event.head_commit.message}}
+             You can check the detailed test report in the GitHub Actions artifacts.
         to: ${{ env.RECIPIENTS }}
         from: GitHub Actions
         attachments: target/site/surefire-report.html
