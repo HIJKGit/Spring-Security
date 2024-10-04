@@ -32,10 +32,10 @@ jobs:
     
     - uses: actions/checkout@v3
     
-    - name: Set up JDK $JDK_VERSION
+    - name: Set up JDK ${{ env.JDK_VERSION }}
       uses: actions/setup-java@v4
       with:
-        java-version: '$JDK_VERSION'
+        java-version: ${{ env.JDK_VERSION }}
         distribution: 'adopt'
         
     - name: Cache Maven packages
@@ -70,7 +70,7 @@ jobs:
         server_port: 465
         username: ${{secrets.EMAIL_USER}}
         password: ${{secrets.EMAIL_PASS}}
-        subject: 【GitHub】【】 Java CI job result for ${{github.repository}}
+        subject: 【GitHub】 Java CI job result for ${{github.repository}}
         body: |
             <!doctype html>
             <html lang="en-US">
@@ -114,6 +114,6 @@ jobs:
                 </div>
               </body>
             </html>
-        to: $RECIPIENTS
+        to: ${{ env.RECIPIENTS }}
         from: GitHub Actions
         attachments: target/site/surefire-report.html
