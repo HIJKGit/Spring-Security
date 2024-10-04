@@ -71,49 +71,7 @@ jobs:
         username: ${{secrets.EMAIL_USER}}
         password: ${{secrets.EMAIL_PASS}}
         subject: 【GitHub】 Java CI job result for ${{github.repository}}
-        body: |
-            <!doctype html>
-            <html lang="en-US">
-              <head>
-                <style>
-                  .container {
-                    display: grid;
-                    justify-content: center;
-                    background-color: rgb(15 23 42);
-                    color: rgba(255, 255, 255, 0.84);
-                    padding: 10px 20px;
-                  }
-                  table {
-                    text-align: left;
-                    border-collapse: collapse;
-                    width: 100%;
-                  }
-                </style>
-              </head>
-              <body>
-                <div class="container">
-                  <h3>
-                    Build job of ${{github.repository}} completed with status
-                    ${{job.status}}
-                  </h3>
-                  <table>
-                    <tbody>
-                      <tr>
-                        <th>Commit:</th>
-                        <td>${{github.sha}}</td>
-                      </tr>
-                      <tr>
-                        <th>Message:</th>
-                        <td>${{github.event.head_commit.message}}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                  <h5>
-                    You can check the detailed test report in the GitHub Actions artifacts.
-                  </h5>
-                </div>
-              </body>
-            </html>
+        file: github_pipeline_email.html
         to: ${{ env.RECIPIENTS }}
         from: GitHub Actions
         attachments: target/site/surefire-report.html
